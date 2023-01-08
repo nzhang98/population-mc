@@ -1,5 +1,5 @@
 import numpy as np
-import scipy as sp
+from scipy import stats
 
 def generate_dataset(n, mu_1 = 0, mu_2 = 2, sig_1 = 1, sig_2 = 1, alpha = 0.5, set_seed = None, form= 'mix-norm'):
     X = np.zeros(n)
@@ -11,8 +11,11 @@ def generate_dataset(n, mu_1 = 0, mu_2 = 2, sig_1 = 1, sig_2 = 1, alpha = 0.5, s
 
     if form == 'mix-norm':
         for i in range(n):
-            X[i] = np.random.normal(mu_1, sig_1)*alpha + np.random.normal(mu_2, sig_2)*(1-alpha)
-        return X
+            draw = np.random.uniform()
+            if draw < alpha:
+                X[i] = np.random.normal(mu_1, sig_1)
+            else:
+                X[i] = np.random.normal(mu_2, sig_2)
     else:
         print('Distributional form not correctly specified')
         return
